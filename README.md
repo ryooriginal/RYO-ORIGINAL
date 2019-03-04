@@ -59,7 +59,7 @@ build the library binary manually. This can be done with the following command `
 
 Clone recursively to pull-in needed submodule(s):
 
-`$ git clone https://github.com/ryo-original/ryo.git`
+`$ git clone https://github.com/ryooriginal/ryo.git`
 
 If you already have a repo cloned, initialize and update:
 
@@ -136,7 +136,7 @@ Tested on a Raspberry Pi Zero with a clean install of minimal Raspbian Stretch (
 ```
 * Clone ryo and checkout most recent release version:
 ```
-        git clone https://github.com/ryo-original/ryo.git
+        git clone https://github.com/ryooriginal/ryo.git
 	cd ryo
 	git checkout tags/0.2.0
 ```
@@ -227,7 +227,7 @@ application.
 
 * To git clone, run:
 
-        git clone https://github.com/ryo-original/ryo.git
+        git clone https://github.com/ryooriginal/ryo.git
 
 **Building**
 
