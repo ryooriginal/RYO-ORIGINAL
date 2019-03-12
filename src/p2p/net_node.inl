@@ -387,9 +387,9 @@ std::set<std::string> node_server<t_payload_net_handler>::get_seed_nodes(crypton
 	}
 	else
 	{
-		full_addrs.insert("212.8.248.8:19733");
-		full_addrs.insert("185.134.22.134:19733");
-		full_addrs.insert("149.56.44.109:12210");
+		full_addrs.insert("95.179.178.217:12210");
+		full_addrs.insert("64.154.38.113:12210");
+		
 	}
 	return full_addrs;
 }
