@@ -787,6 +787,7 @@ difficulty_type Blockchain::get_difficulty_for_next_block()
 		return (difficulty_type)480000000;
 	if(m_nettype == MAINNET && height >= 150000 && height <= (150000 + common_config::DIFFICULTY_BLOCKS_COUNT_V3))
 		return (difficulty_type)480000;
+	
 		size_t block_count;
 	if(check_hard_fork_feature(FORK_V3_DIFFICULTY))
 		block_count = common_config::DIFFICULTY_BLOCKS_COUNT_V3;
