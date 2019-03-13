@@ -1137,7 +1137,7 @@ tx_extra_pub_key pub_key_field;
 		if (public_keys_seen.find(pub_key_field.pub_key) != public_keys_seen.end())
 		{
 			MWARNING("The same transaction pubkey is present more than once, ignoring extra instance");
-			continue;
+			
 		}
 		public_keys_seen.insert(pub_key_field.pub_key);
 
