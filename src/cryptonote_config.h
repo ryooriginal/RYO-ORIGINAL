@@ -124,7 +124,7 @@
 
 #define THREAD_STACK_SIZE 5 * 1024 * 1024
 
-#define DEFAULT_MIXIN 12 // default & minimum mixin allowed
+#define DEFAULT_MIXIN 5 // default & minimum mixin allowed
 #define MAX_MIXIN 240
 
 #define PER_KB_FEE_QUANTIZATION_DECIMALS 8
@@ -219,8 +219,8 @@ struct common_config
 	static constexpr uint64_t BLOCK_SIZE_GROWTH_FAVORED_ZONE = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE * 4;
 	static constexpr uint64_t TRANSACTION_SIZE_LIMIT = 300 * 1024;			// 256 kB
 	static constexpr uint64_t BLOCK_SIZE_LIMIT_ABSOLUTE = 16 * 1024 * 1024; // 16 MB
-	static constexpr uint64_t FEE_PER_KB = 500000;
-	static constexpr uint64_t DYNAMIC_FEE_PER_KB_BASE_FEE = 500000;				  // 0.0005 * pow(10, 9)
+	static constexpr uint64_t FEE_PER_KB = 300000;
+	static constexpr uint64_t DYNAMIC_FEE_PER_KB_BASE_FEE = 300000;				  // 0.0005 * pow(10, 9)
 	static constexpr uint64_t DYNAMIC_FEE_PER_KB_BASE_BLOCK_REWARD = 64000000000; // 64 * pow(10, 9)
 
 	static constexpr uint64_t CRYPTONOTE_MAX_BLOCK_NUMBER = 500000000;
@@ -243,15 +243,15 @@ struct config<MAINNET>
 	static constexpr uint64_t LEGACY_LONG_INTEGRATED_ADDRESS_BASE58_PREFIX = 0x29339a; //Sumi
 	static constexpr uint64_t LEGACY_LONG_SUBADDRESS_BASE58_PREFIX = 0x8319a;		   // Subo
 
-	static constexpr uint64_t RYO_KURZ_SUBADDRESS_BASE58_PREFIX = 0x3fe192;			// RYo
-	static constexpr uint64_t RYO_KURZ_ADDRESS_BASE58_PREFIX = 0x2c6192;			// RYoK
-	static constexpr uint64_t RYO_LONG_ADDRESS_BASE58_PREFIX = 0x2ce192;			// RYoL
-	static constexpr uint64_t RYO_LONG_INTEGRATED_ADDRESS_BASE58_PREFIX = 0x2de192; // RYoN
-	static constexpr uint64_t RYO_LONG_SUBADDRESS_BASE58_PREFIX = 0x2fe192;			// RYoS
+	static constexpr uint64_t RYO_KURZ_SUBADDRESS_BASE58_PREFIX = 0x69a6192;			// RYoos
+	static constexpr uint64_t RYO_KURZ_ADDRESS_BASE58_PREFIX = 0x1fda2192;			// RYook
+	static constexpr uint64_t RYO_LONG_ADDRESS_BASE58_PREFIX = 0x3a6192;			// RYoo
+	static constexpr uint64_t RYO_LONG_INTEGRATED_ADDRESS_BASE58_PREFIX = 0x67a2192; // RYooN
+	static constexpr uint64_t RYO_LONG_SUBADDRESS_BASE58_PREFIX = 0xafa2192;			// RYooS
 
-	static constexpr uint16_t P2P_DEFAULT_PORT = 12210;
-	static constexpr uint16_t RPC_DEFAULT_PORT = 12211;
-	static constexpr uint16_t ZMQ_RPC_DEFAULT_PORT = 12212;
+	static constexpr uint16_t P2P_DEFAULT_PORT = 12213;
+	static constexpr uint16_t RPC_DEFAULT_PORT = 12214;
+	static constexpr uint16_t ZMQ_RPC_DEFAULT_PORT = 12215;
 
 	//Random UUID generated from radioactive cs-137 ( http://www.fourmilab.ch/hotbits/how3.html ) it gives me a nice warm feeling =) 
 	static constexpr boost::uuids::uuid NETWORK_ID = { { 0xcd, 0xac, 0x50, 0x2e, 0xb3, 0x74, 0x8f, 0xf2, 0x0f, 0xb7, 0x18, 0x18, 0x0f, 0x73, 0x24, 0x13 } }; 
