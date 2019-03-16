@@ -775,6 +775,10 @@ bool Blockchain::get_block_by_hash(const crypto::hash &h, block &blk, bool *orph
 // last DIFFICULTY_BLOCKS_COUNT blocks and passes them to next_difficulty,
 // returning the result of that call.  Ignores the genesis block, and can use
 // less blocks than desired if there aren't enough.
+// This function aggregates the cumulative difficulties and timestamps of the
+// last DIFFICULTY_BLOCKS_COUNT blocks and passes them to next_difficulty,
+// returning the result of that call.  Ignores the genesis block, and can use
+// less blocks than desired if there aren't enough.
 difficulty_type Blockchain::get_difficulty_for_next_block()
 {
 	LOG_PRINT_L3("Blockchain::" << __func__);
@@ -783,17 +787,17 @@ difficulty_type Blockchain::get_difficulty_for_next_block()
 	std::vector<difficulty_type> difficulties;
 	uint64_t height = m_db->height();
 
-	if(m_nettype == MAINNET && height >= MAINNET_HARDFORK_V3_HEIGHT && height <= (MAINNET_HARDFORK_V3_HEIGHT + common_config::DIFFICULTY_BLOCKS_COUNT_V2){)
-		return (difficulty_type)480000000;}
+		if(m_nettype == MAINNET && height >= 150000 && height <= (150000 + common_config::DIFFICULTY_BLOCKS_COUNT_V3))
+		return (difficulty_type)480000;
 
-		if(m_nettype == MAINNET && height >= 150000 && height <= (150000 + common_config::DIFFICULTY_BLOCKS_COUNT_V3)){
-		return (difficulty_type)480000;}
 		size_t block_count;
-	if(check_hard_fork_feature(FORK_V3_DIFFICULTY))
-		block_count = common_config::DIFFICULTY_BLOCKS_COUNT_V3;
-	else if(check_hard_fork_feature(FORK_V2_DIFFICULTY))
+
+	if(check_hard_fork_feature(FORK_V3_DIFFICULTY)) 
+		block_count = common_config::DIFFICULTY_BLOCKS_COUNT_V3; 
+
+	else if(check_hard_fork_feature(FORK_V2_DIFFICULTY)) 
 		block_count = common_config::DIFFICULTY_BLOCKS_COUNT_V2;
-	else
+	else 
 		block_count = common_config::DIFFICULTY_BLOCKS_COUNT_V1;
 
 
