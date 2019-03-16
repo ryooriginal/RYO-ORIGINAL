@@ -782,18 +782,12 @@ difficulty_type Blockchain::get_difficulty_for_next_block()
 	std::vector<uint64_t> timestamps;
 	std::vector<difficulty_type> difficulties;
 	uint64_t height = m_db->height();
-	
-	
-// Reset network hashrate 
-  if (m_nettype == MAINNET && (uint64_t)height >= MAINNET_HARDFORK_V3_HEIGHT && (uint64_t)height <= MAINNET_HARDFORK_V3_HEIGHT + (uint64_t)DIFFICULTY_BLOCKS_COUNT_V2){
-    return (difficulty_type)480000000;
-  }
 
-  // Reset network hashrate 
-  if(m_nettype == MAINNET && height >= 150000 && height <= (150000 + common_config::DIFFICULTY_BLOCKS_COUNT_V3)){
-    return (difficulty_type)480000;
-  }
-	
+	if(m_nettype == MAINNET && height >= MAINNET_HARDFORK_V3_HEIGHT && height <= (MAINNET_HARDFORK_V3_HEIGHT + common_config::DIFFICULTY_BLOCKS_COUNT_V2){)
+		return (difficulty_type)480000000;}
+
+		if(m_nettype == MAINNET && height >= 150000 && height <= (150000 + common_config::DIFFICULTY_BLOCKS_COUNT_V3)){
+		return (difficulty_type)480000;}
 		size_t block_count;
 	if(check_hard_fork_feature(FORK_V3_DIFFICULTY))
 		block_count = common_config::DIFFICULTY_BLOCKS_COUNT_V3;
@@ -801,6 +795,7 @@ difficulty_type Blockchain::get_difficulty_for_next_block()
 		block_count = common_config::DIFFICULTY_BLOCKS_COUNT_V2;
 	else
 		block_count = common_config::DIFFICULTY_BLOCKS_COUNT_V1;
+
 
 	// ND: Speedup
 	// 1. Keep a list of the last 735 (or less) blocks that is used to compute difficulty,
