@@ -655,7 +655,7 @@ bool miner::background_worker_thread()
 			boost::tribool battery_powered(on_battery_power());
 			if(!indeterminate(battery_powered))
 			{
-				on_ac_power = !battery_powered;
+				on_ac_power = !(bool)battery_powered;
 			}
 		}
 
