@@ -193,7 +193,7 @@ struct common_config
 	static constexpr uint64_t POISSON_CHECK_DEPTH = 60;   // Main-chain depth of the poisson check. The attacker will have to tamper 50% of those blocks
 	static constexpr double POISSON_LOG_P_REJECT = -75.0; // Reject reorg if the probablity that the timestamps are genuine is below e^x, -75 = 10^-33
 
-	static constexpr uint64_t DIFFICULTY_TARGET = 240; // 4 minutes
+	static constexpr uint64_t DIFFICULTY_TARGET = 120; // 4 minutes
 
 	/////////////// V1 difficulty constants
 	static constexpr uint64_t DIFFICULTY_WINDOW_V1 = 720; // blocks
