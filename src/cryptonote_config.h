@@ -135,9 +135,9 @@
 
 // coin emission change interval/speed configs
 #define COIN_EMISSION_MONTH_INTERVAL 6																										// months to change emission speed
-#define COIN_EMISSION_HEIGHT_INTERVAL ((uint64_t)(COIN_EMISSION_MONTH_INTERVAL * (30.4375 * 24 * 3600) / common_config::DIFFICULTY_TARGET)) // calculated to # of heights to change emission speed
+#define COIN_EMISSION_HEIGHT_INTERVAL ((uint64_t)(COIN_EMISSION_MONTH_INTERVAL * (30.4375 * 24 * 3600) / 240)) // calculated to # of heights to change emission speed
 #define PEAK_COIN_EMISSION_YEAR 4
-#define PEAK_COIN_EMISSION_HEIGHT ((uint64_t)(((12 * 30.4375 * 24 * 3600) / common_config::DIFFICULTY_TARGET) * PEAK_COIN_EMISSION_YEAR)) // = (# of heights emmitted per year) * PEAK_COIN_EMISSION_YEAR
+#define PEAK_COIN_EMISSION_HEIGHT ((uint64_t)(((12 * 30.4375 * 24 * 3600) / 240) * PEAK_COIN_EMISSION_YEAR)) // = (# of heights emmitted per year) * PEAK_COIN_EMISSION_YEAR* PEAK_COIN_EMISSION_YEAR
 
 #define TX_FORK_ID_STR "ryo-currency"
 
@@ -193,7 +193,7 @@ struct common_config
 	static constexpr uint64_t POISSON_CHECK_DEPTH = 60;   // Main-chain depth of the poisson check. The attacker will have to tamper 50% of those blocks
 	static constexpr double POISSON_LOG_P_REJECT = -75.0; // Reject reorg if the probablity that the timestamps are genuine is below e^x, -75 = 10^-33
 
-	static constexpr uint64_t DIFFICULTY_TARGET = 120; // 4 minutes
+	static constexpr uint64_t DIFFICULTY_TARGET = 120; // 2 minutes
 
 	/////////////// V1 difficulty constants
 	static constexpr uint64_t DIFFICULTY_WINDOW_V1 = 720; // blocks
