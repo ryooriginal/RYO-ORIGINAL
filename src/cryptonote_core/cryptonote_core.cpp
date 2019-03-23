@@ -1334,7 +1334,7 @@ bool core::check_fork_time()
 		break;
 	case HardFork::UpdateNeeded:
 		MCLOG_RED(level, "global", "**********************************************************************");
-		MCLOG_RED(level, "global", "Last scheduled hard fork time shows a daemon update is needed soon.");
+		MCLOG_RED(level, "global", "Ryo-Original Uncompromised Privacy");
 		MCLOG_RED(level, "global", "**********************************************************************");
 		break;
 	default:
