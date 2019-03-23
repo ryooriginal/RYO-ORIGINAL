@@ -1314,7 +1314,6 @@ tx_extra_pub_key pub_key_field;
 					uint64_t amount = tx.vout[o].amount ? tx.vout[o].amount : tx_scan_info[o].amount;
 					uint64_t extra_amount = amount - m_transfers[kit->second].amount();
 
-
 					if(!pool)
 					{
 						transfer_details &td = m_transfers[kit->second];
@@ -1327,7 +1326,7 @@ tx_extra_pub_key pub_key_field;
 						td.m_pk_index = 0;
 						td.m_subaddr_index = tx_scan_info[o].received->index;
 						expand_subaddresses(tx_scan_info[o].received->index);
-						td.m_amount = amount;
+						if(tx.vout[o].amount == 0)
 						{
 							td.m_mask = tx_scan_info[o].mask;
 							td.m_rct = true;
