@@ -1,4 +1,4 @@
-#define DEF_RYO_VERSION "0.2.0.2"
+#define DEF_RYO_VERSION "0.3.0.2"
 
 //! git will put "#define GIT_ARCHIVE 1" on the next line inside archives. 
 #define GIT_ARCHIVE 1
@@ -10,7 +10,7 @@
 #   define DEF_RYO_BRANCH "@GIT_BRANCH@"
 #endif
 
-#define DEF_RYO_RELEASE_NAME "Gipsy's Revenge"
+#define DEF_RYO_RELEASE_NAME "Gipsy's Bulletproof"
 #define DEF_RYO_VERSION_FULL DEF_RYO_VERSION "-" DEF_RYO_VERSION_TAG "/" DEF_RYO_BRANCH
 
 #include "version.h"
