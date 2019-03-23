@@ -1046,10 +1046,9 @@ static uint64_t decodeRct(const rct::rctSig &rv, const crypto::key_derivation &d
 		switch(rv.type)
 		{
 		case rct::RCTTypeSimple:
-		case rct::RCTTypeSimpleBulletproof:
+		case rct::RCTTypeBulletproof:
 			return rct::decodeRctSimple(rv, rct::sk2rct(scalar1), i, mask, hwdev);
 		case rct::RCTTypeFull:
-		case rct::RCTTypeFullBulletproof:
 			return rct::decodeRct(rv, rct::sk2rct(scalar1), i, mask, hwdev);
 		default:
 			LOG_ERROR("Unsupported rct type: " << rv.type);
@@ -5144,7 +5143,7 @@ bool wallet2::sign_multisig_tx(multisig_tx_set &exported_txs, std::vector<crypto
 		cryptonote::transaction tx;
 		rct::multisig_out msout = ptx.multisig_sigs.front().msout;
 		auto sources = sd.sources;
-		const bool bulletproof = sd.use_rct && (ptx.tx.rct_signatures.type == rct::RCTTypeFullBulletproof || ptx.tx.rct_signatures.type == rct::RCTTypeSimpleBulletproof);
+		const bool bulletproof = (ptx.tx.rct_signatures.type == rct::RCTTypeBulletproof);
 		bool r = cryptonote::construct_tx_with_tx_key(m_account.get_keys(), m_subaddresses, sources, sd.splitted_dsts, ptx.change_dts.addr, sd.extra, tx, sd.unlock_time, ptx.tx_key, ptx.additional_tx_keys, sd.use_rct, bulletproof, &msout, false);
 		THROW_WALLET_EXCEPTION_IF(!r, error::tx_not_constructed, sd.sources, sd.splitted_dsts, sd.unlock_time, m_nettype);
 

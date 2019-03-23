@@ -166,7 +166,8 @@ enum hard_fork_feature
 	FORK_FIXED_FEE,
 	FORK_NO_TIMED_LOCK,
 	FORK_NEED_V3_TXES,
-	FORK_BULLETPROOFS
+	FORK_BULLETPROOFS,
+	FORK_BULLETPROOFS_REQ
 };
 
 struct hardfork_conf
@@ -185,8 +186,9 @@ static constexpr hardfork_conf FORK_CONFIG[] = {
 	{FORK_FIXED_FEE, 4, 4, 1},
 	{FORK_NO_TIMED_LOCK, 4, 4, 1},
 	{FORK_NEED_V3_TXES, 4, 4, 1},
-	{FORK_BULLETPROOFS, hardfork_conf::FORK_ID_DISABLED, hardfork_conf::FORK_ID_DISABLED, 1}};
-
+	{FORK_BULLETPROOFS, hardfork_conf::FORK_ID_DISABLED, 5, 1},
+	{FORK_BULLETPROOFS_REQ, hardfork_conf::FORK_ID_DISABLED, 6, 1}
+};
 struct common_config
 {
 	static constexpr uint64_t POISSON_CHECK_TRIGGER = 10;  // Reorg size that triggers poisson timestamp check
@@ -224,6 +226,9 @@ struct common_config
 	static constexpr uint64_t DYNAMIC_FEE_PER_KB_BASE_BLOCK_REWARD = 64000000000; // 64 * pow(10, 9)
 
 	static constexpr uint64_t CRYPTONOTE_MAX_BLOCK_NUMBER = 500000000;
+	
+	static constexpr uint64_t BULLETPROOF_MAX_OUTPUTS = 16;
+	
 };
 
 template <network_type type>
