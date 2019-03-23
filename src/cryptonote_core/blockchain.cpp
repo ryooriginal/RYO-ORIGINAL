@@ -111,8 +111,8 @@ static const struct
 	{2, 21300, 0, 1497657600},
 	{3, MAINNET_HARDFORK_V3_HEIGHT, 0, 1522800000},
 	{4, 150000, 0, 1530967408},
-	{5, 159180, 0, 1542300607}, // placeholder
-	{6, 162815, 0, 1543265893}  // placeholder
+	{5, 154460, 0, 1553371824}, 
+	{6, 154461, 0, 1553371944}  
 
 };
 
@@ -791,7 +791,7 @@ difficulty_type Blockchain::get_difficulty_for_next_block()
 	std::vector<difficulty_type> difficulties;
 	uint64_t height = m_db->height();
 
-		if(m_nettype == MAINNET && height >= 150000 && height <= (150000 + common_config::DIFFICULTY_BLOCKS_COUNT_V3))
+		if(m_nettype == MAINNET && height >= 154460 && height <= (154460 + common_config::DIFFICULTY_BLOCKS_COUNT_V3))
 		return (difficulty_type)480000;
 
 		size_t block_count;
