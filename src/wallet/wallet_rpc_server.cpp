@@ -914,12 +914,12 @@ bool wallet_rpc_server::on_transfer_split(const wallet_rpc::COMMAND_RPC_TRANSFER
 				std::copy(dsts.end()-size_c, dsts.end(), dsts_c.begin());
 				dsts.resize(dsts.size()-size_c);
 				std::vector<wallet2::pending_tx> ptx_vector_c = m_wallet->create_transactions_2(
-					dsts_c, mixin, req.unlock_time, priority, check_pid(pid), req.account_index, req.subaddr_indices, m_trusted_daemon);
+					dsts_c, mixin, req.unlock_time, priority, extra, req.account_index, req.subaddr_indices, m_trusted_daemon);
 				std::copy(ptx_vector_c.begin(), ptx_vector_c.end(), std::back_inserter(ptx_vector));
 			}
 		}
 		else
-			ptx_vector = m_wallet->create_transactions_2(dsts, mixin, req.unlock_time, priority, check_pid(pid), req.account_index, req.subaddr_indices, m_trusted_daemon);
+			ptx_vector = m_wallet->create_transactions_2(dsts, mixin, req.unlock_time, priority, extra, req.account_index, req.subaddr_indices, m_trusted_daemon);
 		
 		LOG_PRINT_L2("on_transfer_split called create_transactions_2");
 
