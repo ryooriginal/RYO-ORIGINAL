@@ -793,9 +793,7 @@ difficulty_type Blockchain::get_difficulty_for_next_block()
 	std::vector<difficulty_type> difficulties;
 	uint64_t height = m_db->height();
             
-		if(m_nettype == MAINNET && height >= 150000 && height <= (150063))
-		return (difficulty_type)480000;
-		if(m_nettype == MAINNET && height >= 154460 && height <= (154520))
+		 if(m_nettype == MAINNET && height >= 150000 && height <= (150000 + common_config::DIFFICULTY_BLOCKS_COUNT_V3))
 		return (difficulty_type)480000;
 
 		size_t block_count;
