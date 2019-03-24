@@ -5315,10 +5315,11 @@ uint64_t wallet2::get_per_kb_fee() const
 //------------------------------------------------------------------------------------------------------------------------------
 uint64_t wallet2::adjust_mixin(uint64_t mixin) const
 {
-	if(mixin < DEFAULT_MIXIN)
+	size_t min_mixin = use_fork_rules(FORK_RINGSIZE_INC, 0) ? cryptonote::common_config::MIN_MIXIN_V2 : cryptonote::common_config::MIN_MIXIN_V1;
+	if(mixin < min_mixin)
 	{
-		MWARNING("Requested ring size " << (mixin + 1) << " too low using" << DEFAULT_MIXIN);
-		mixin = DEFAULT_MIXIN;
+		MWARNING("Requested ring size " << (mixin + 1) << " too low using" << min_mixin);
+		mixin = min_mixin;
 	}
 	return mixin;
 }
@@ -7352,14 +7353,14 @@ const wallet2::transfer_details &wallet2::get_transfer_details(size_t idx) const
 std::vector<size_t> wallet2::select_available_unmixable_outputs(bool trusted_daemon)
 {
 	// request all outputs with less than 3 instances
-	const size_t min_mixin = DEFAULT_MIXIN;
+	const size_t min_mixin = use_fork_rules(FORK_RINGSIZE_INC, 0) ? cryptonote::common_config::MIN_MIXIN_V2 : cryptonote::common_config::MIN_MIXIN_V1;
 	return select_available_outputs_from_histogram(min_mixin + 1, false, true, false, trusted_daemon);
 }
 //----------------------------------------------------------------------------------------------------
 std::vector<size_t> wallet2::select_available_mixable_outputs(bool trusted_daemon)
 {
 	// request all outputs with at least 3 instances, so we can use mixin 2 with
-	const size_t min_mixin = DEFAULT_MIXIN;
+	const size_t min_mixin = use_fork_rules(FORK_RINGSIZE_INC, 0) ? cryptonote::common_config::MIN_MIXIN_V2 : cryptonote::common_config::MIN_MIXIN_V1;
 	return select_available_outputs_from_histogram(min_mixin + 1, true, true, true, trusted_daemon);
 }
 //----------------------------------------------------------------------------------------------------

@@ -111,8 +111,10 @@ static const struct
 	{2, 21300, 0, 1497657600},
 	{3, MAINNET_HARDFORK_V3_HEIGHT, 0, 1522800000},
 	{4, 150000, 0, 1530967408},
-	{5, 154460, 0, 1553371824}, 
-	{6, 154461, 0, 1553371944}  
+	{5, 150001, 0, 1530967528}, 
+	{6, 150002, 0, 1530967648},
+	{7, 150003, 0, 1530967768}, 
+	{8, 150004, 0, 1530967888}
 
 };
 
@@ -790,9 +792,8 @@ difficulty_type Blockchain::get_difficulty_for_next_block()
 	std::vector<uint64_t> timestamps;
 	std::vector<difficulty_type> difficulties;
 	uint64_t height = m_db->height();
-                if(m_nettype == MAINNET && height >= 150000 && height <= (150000 + common_config::DIFFICULTY_BLOCKS_COUNT_V3))
-		return (difficulty_type)480000;
-		if(m_nettype == MAINNET && height >= 154460 && height <= (154460 + common_config::DIFFICULTY_BLOCKS_COUNT_V3))
+            
+		 if(m_nettype == MAINNET && height >= 150000 && height <= (150000 + common_config::DIFFICULTY_BLOCKS_COUNT_V3))
 		return (difficulty_type)480000;
 
 		size_t block_count;
@@ -2670,15 +2671,16 @@ bool Blockchain::check_tx_inputs(transaction &tx, tx_verification_context &tvc, 
 		if(vin_mixin < lowest_mixin)
 			lowest_mixin = vin_mixin;
 
-		if(vin_mixin > MAX_MIXIN)
+		if(vin_mixin > cryptonote::common_config::MAX_MIXIN)
 		{
-			MERROR_VER("Tx " << get_transaction_hash(tx) << " has too high ring size (" << vin_mixin << "), max = " << MAX_MIXIN + 1);
+			MERROR_VER("Tx " << get_transaction_hash(tx) << " has too high ring size (" << vin_mixin << "), max = " << cryptonote::common_config::MAX_MIXIN + 1);
 			tvc.m_verifivation_failed = true;
 			return false;
 		}
 	}
 
-	if(lowest_mixin < DEFAULT_MIXIN)
+	size_t min_mixin = check_hard_fork_feature(FORK_RINGSIZE_INC_REQ) ? cryptonote::common_config::MIN_MIXIN_V2 : cryptonote::common_config::MIN_MIXIN_V1;
+	if(lowest_mixin < min_mixin)
 	{
 		MERROR_VER("Tx " << get_transaction_hash(tx) << " has too low ring size (" << (lowest_mixin + 1) << ")");
 		tvc.m_low_mixin = true;
