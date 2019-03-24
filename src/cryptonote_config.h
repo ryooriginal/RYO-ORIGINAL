@@ -226,6 +226,8 @@ struct common_config
 	static constexpr uint64_t TRANSACTION_SIZE_LIMIT = 300 * 1024;			// 256 kB
 	static constexpr uint64_t BLOCK_SIZE_LIMIT_ABSOLUTE = 16 * 1024 * 1024; // 16 MB
 	static constexpr uint64_t FEE_PER_KB = 300000;
+	static constexpr uint64_t FEE_PER_RING_MEMBER = 300000;
+	static constexpr uint64_t FEE_PER_KB = 300000;
 	static constexpr uint64_t DYNAMIC_FEE_PER_KB_BASE_FEE = 300000;				  // 0.0005 * pow(10, 9)
 	static constexpr uint64_t DYNAMIC_FEE_PER_KB_BASE_BLOCK_REWARD = 64000000000; // 64 * pow(10, 9)
 
