@@ -44,7 +44,7 @@ class WalletSubaddress : public ::testing::Test
 	{
 		try
 		{
-			w1.generate("", password, nullptr, &recovery_key);
+			w1.generate_legacy("", password, recovery_key, false);
 		}
 		catch(const std::exception &e)
 		{
