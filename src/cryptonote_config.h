@@ -193,7 +193,7 @@ static constexpr hardfork_conf FORK_CONFIG[] = {
 struct common_config
 {
 	static constexpr size_t MIN_MIXIN_V1 = 12; // default & minimum mixin allowed
-	static constexpr size_t MIN_MIXIN_V2 = 5;
+	static constexpr size_t MIN_MIXIN_V2 = 100;
 	static constexpr size_t MAX_MIXIN = 240;
 	static constexpr uint64_t POISSON_CHECK_TRIGGER = 10;  // Reorg size that triggers poisson timestamp check
 	static constexpr uint64_t POISSON_CHECK_DEPTH = 60;   // Main-chain depth of the poisson check. The attacker will have to tamper 50% of those blocks
