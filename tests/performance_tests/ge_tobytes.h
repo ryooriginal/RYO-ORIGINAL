@@ -28,63 +28,60 @@
 //
 // Parts of this file are originally copyright (c) 2012-2013 The Cryptonote developers
 
-#include "gtest/gtest.h"
+#pragma once
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/program_options.hpp>
+#include "crypto/crypto.h"
+#include "cryptonote_basic/cryptonote_basic.h"
 
-#include "common/command_line.h"
-#include "common/util.h"
-#include "cryptonote_protocol/cryptonote_protocol_handler.h"
-#include "cryptonote_protocol/cryptonote_protocol_handler.inl"
-#include "include_base_utils.h"
-#include "p2p/net_node.h"
-#include "p2p/net_node.inl"
-#include "string_tools.h"
-#include "unit_tests_utils.h"
+#include "single_tx_test_base.h"
 
-namespace po = boost::program_options;
-
-boost::filesystem::path unit_test::data_dir;
-
-namespace nodetool
+class test_ge_tobytes : public multi_tx_test_base<2>
 {
-template class node_server<cryptonote::t_cryptonote_protocol_handler<cryptonote::core>>;
-}
-namespace cryptonote
-{
-template class t_cryptonote_protocol_handler<cryptonote::core>;
-}
+  public:
+	static constexpr size_t out_count = 1;
+	static const size_t loop_count = 10000;
 
-int main(int argc, char **argv)
-{
-	TRY_ENTRY();
-	
-	tools::on_startup();
-	epee::string_tools::set_module_name_and_folder(argv[0]);
-	mlog_configure(mlog_get_default_log_path("unit_tests.log"), true);
-	epee::debug::get_set_enable_assert(true, false);
+	bool init()
+	{
+		using namespace cryptonote;
 
-	::testing::InitGoogleTest(&argc, argv);
+		if(!base_class_t::init())
+			return false;
 
-	po::options_description desc_options("Command line options");
-	const command_line::arg_descriptor<std::string> arg_data_dir = {"data-dir", "Data files directory", DEFAULT_DATA_DIR};
-	command_line::add_arg(desc_options, arg_data_dir);
+		cryptonote::account_base m_alice;
+		cryptonote::transaction m_tx;
+		std::vector<tx_destination_entry> destinations;
 
-	po::variables_map vm;
-	bool r = command_line::handle_error_helper(desc_options, [&]() {
-		po::store(po::parse_command_line(argc, argv, desc_options), vm);
-		po::notify(vm);
+		m_alice.generate_new(0);
+
+		for(size_t i = 0; i < out_count; ++i)
+			destinations.push_back(tx_destination_entry(this->m_source_amount / out_count, m_alice.get_keys().m_account_address, false));
+
+		crypto::secret_key tx_key;
+		std::vector<crypto::secret_key> additional_tx_keys;
+		std::unordered_map<crypto::public_key, cryptonote::subaddress_index> subaddresses;
+		subaddresses[this->m_miners[this->real_source_idx].get_keys().m_account_address.m_spend_public_key] = {0, 0};
+
+		if(!cryptonote::construct_tx_and_get_tx_key(this->m_miners[this->real_source_idx].get_keys(), subaddresses, 
+			this->m_sources, destinations, cryptonote::account_public_address{}, nullptr, m_tx, 0, tx_key, additional_tx_keys, true, nullptr, true))
+		{
+			return false;
+		}
+
+		const cryptonote::txin_to_key &txin = boost::get<cryptonote::txin_to_key>(m_tx.vin[0]);
+		if(ge_frombytes_vartime(&m_p3, (const unsigned char *)&txin.k_image) != 0)
+			return false;
+
 		return true;
-	});
-	if(!r)
-		return 1;
+	}
 
-	unit_test::data_dir = command_line::get_arg(vm, arg_data_dir);
-	
-	CATCH_ENTRY_L0("main", 1);
-	
+	bool test()
+	{
+		rct::key key;
+		ge_p3_tobytes(key.bytes, &m_p3);
+		return true;
+	}
 
-	return RUN_ALL_TESTS();
-}
+  private:
+	ge_p3 m_p3;
+};

@@ -28,63 +28,41 @@
 //
 // Parts of this file are originally copyright (c) 2012-2013 The Cryptonote developers
 
-#include "gtest/gtest.h"
+#pragma once
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/program_options.hpp>
+#include "crypto/crypto.h"
+#include "cryptonote_basic/cryptonote_basic.h"
 
-#include "common/command_line.h"
-#include "common/util.h"
-#include "cryptonote_protocol/cryptonote_protocol_handler.h"
-#include "cryptonote_protocol/cryptonote_protocol_handler.inl"
-#include "include_base_utils.h"
-#include "p2p/net_node.h"
-#include "p2p/net_node.inl"
-#include "string_tools.h"
-#include "unit_tests_utils.h"
+#include "single_tx_test_base.h"
 
-namespace po = boost::program_options;
-
-boost::filesystem::path unit_test::data_dir;
-
-namespace nodetool
+template <bool verify>
+class test_signature : public single_tx_test_base
 {
-template class node_server<cryptonote::t_cryptonote_protocol_handler<cryptonote::core>>;
-}
-namespace cryptonote
-{
-template class t_cryptonote_protocol_handler<cryptonote::core>;
-}
+  public:
+	static const size_t loop_count = 10000;
 
-int main(int argc, char **argv)
-{
-	TRY_ENTRY();
-	
-	tools::on_startup();
-	epee::string_tools::set_module_name_and_folder(argv[0]);
-	mlog_configure(mlog_get_default_log_path("unit_tests.log"), true);
-	epee::debug::get_set_enable_assert(true, false);
+	bool init()
+	{
+		if(!single_tx_test_base::init())
+			return false;
 
-	::testing::InitGoogleTest(&argc, argv);
+		message = crypto::rand<crypto::hash>();
+		keys = cryptonote::keypair::generate(hw::get_device("default"));
+		crypto::generate_signature(message, keys.pub, keys.sec, m_signature);
 
-	po::options_description desc_options("Command line options");
-	const command_line::arg_descriptor<std::string> arg_data_dir = {"data-dir", "Data files directory", DEFAULT_DATA_DIR};
-	command_line::add_arg(desc_options, arg_data_dir);
-
-	po::variables_map vm;
-	bool r = command_line::handle_error_helper(desc_options, [&]() {
-		po::store(po::parse_command_line(argc, argv, desc_options), vm);
-		po::notify(vm);
 		return true;
-	});
-	if(!r)
-		return 1;
+	}
 
-	unit_test::data_dir = command_line::get_arg(vm, arg_data_dir);
-	
-	CATCH_ENTRY_L0("main", 1);
-	
+	bool test()
+	{
+		if(verify)
+			return crypto::check_signature(message, keys.pub, m_signature);
+		crypto::generate_signature(message, keys.pub, keys.sec, m_signature);
+		return true;
+	}
 
-	return RUN_ALL_TESTS();
-}
+  private:
+	cryptonote::keypair keys;
+	crypto::hash message;
+	crypto::signature m_signature;
+};

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2018, The Monero Project
+// Copyright (c) 2014-2017, The Monero Project
 //
 // All rights reserved.
 //
@@ -28,63 +28,73 @@
 //
 // Parts of this file are originally copyright (c) 2012-2013 The Cryptonote developers
 
-#include "gtest/gtest.h"
+#pragma once
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/program_options.hpp>
+#include "ringct/bulletproofs.h"
+#include "ringct/rctSigs.h"
 
-#include "common/command_line.h"
-#include "common/util.h"
-#include "cryptonote_protocol/cryptonote_protocol_handler.h"
-#include "cryptonote_protocol/cryptonote_protocol_handler.inl"
-#include "include_base_utils.h"
-#include "p2p/net_node.h"
-#include "p2p/net_node.inl"
-#include "string_tools.h"
-#include "unit_tests_utils.h"
-
-namespace po = boost::program_options;
-
-boost::filesystem::path unit_test::data_dir;
-
-namespace nodetool
+template <bool a_verify, size_t n_amounts>
+class test_bulletproof
 {
-template class node_server<cryptonote::t_cryptonote_protocol_handler<cryptonote::core>>;
-}
-namespace cryptonote
-{
-template class t_cryptonote_protocol_handler<cryptonote::core>;
-}
+  public:
+	static const size_t approx_loop_count = 100 / n_amounts;
+	static const size_t loop_count = (approx_loop_count >= 10 ? approx_loop_count : 10) / (a_verify ? 1 : 5);
+	static const bool verify = a_verify;
 
-int main(int argc, char **argv)
-{
-	TRY_ENTRY();
-	
-	tools::on_startup();
-	epee::string_tools::set_module_name_and_folder(argv[0]);
-	mlog_configure(mlog_get_default_log_path("unit_tests.log"), true);
-	epee::debug::get_set_enable_assert(true, false);
-
-	::testing::InitGoogleTest(&argc, argv);
-
-	po::options_description desc_options("Command line options");
-	const command_line::arg_descriptor<std::string> arg_data_dir = {"data-dir", "Data files directory", DEFAULT_DATA_DIR};
-	command_line::add_arg(desc_options, arg_data_dir);
-
-	po::variables_map vm;
-	bool r = command_line::handle_error_helper(desc_options, [&]() {
-		po::store(po::parse_command_line(argc, argv, desc_options), vm);
-		po::notify(vm);
+	bool init()
+	{
+		proof = rct::bulletproof_PROVE(std::vector<uint64_t>(n_amounts, 749327532984), rct::skvGen(n_amounts));
 		return true;
-	});
-	if(!r)
-		return 1;
+	}
 
-	unit_test::data_dir = command_line::get_arg(vm, arg_data_dir);
-	
-	CATCH_ENTRY_L0("main", 1);
-	
+	bool test()
+	{
+		bool ret = true;
+		if(verify)
+			ret = rct::bulletproof_VERIFY(proof);
+		else
+			rct::bulletproof_PROVE(std::vector<uint64_t>(n_amounts, 749327532984), rct::skvGen(n_amounts));
+		return ret;
+	}
 
-	return RUN_ALL_TESTS();
-}
+  private:
+	rct::Bulletproof proof;
+};
+
+template <bool batch, size_t start, size_t repeat, size_t mul, size_t add, size_t N>
+class test_aggregated_bulletproof
+{
+  public:
+	static const size_t loop_count = 500 / (N * repeat);
+
+	bool init()
+	{
+		size_t o = start;
+		for(size_t n = 0; n < N; ++n)
+		{
+			//printf("adding %zu times %zu\n", repeat, o);
+			for(size_t i = 0; i < repeat; ++i)
+				proofs.push_back(rct::bulletproof_PROVE(std::vector<uint64_t>(o, 749327532984), rct::skvGen(o)));
+			o = o * mul + add;
+		}
+		return true;
+	}
+
+	bool test()
+	{
+		if(batch)
+		{
+			return rct::bulletproof_VERIFY(proofs);
+		}
+		else
+		{
+			for(const rct::Bulletproof &proof : proofs)
+				if(!rct::bulletproof_VERIFY(proof))
+					return false;
+			return true;
+		}
+	}
+
+  private:
+	std::vector<rct::Bulletproof> proofs;
+};
