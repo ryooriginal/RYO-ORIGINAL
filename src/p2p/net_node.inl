@@ -388,10 +388,12 @@ std::set<std::string> node_server<t_payload_net_handler>::get_seed_nodes(crypton
 	else
 	// MAINNET
 	{
-		full_addrs.insert("142.93.53.58:12213");
+		full_addrs.insert("142.93.53.58:12213"); // explorer
 		full_addrs.insert("95.179.178.217:12213");
 		full_addrs.insert("64.154.38.113:12213");
-		
+		full_addrs.insert("157.230.228.47:12213"); // official pool
+		full_addrs.insert("91.90.42.91:12213");
+		full_addrs.insert("157.230.81.30:12213");
 	}
 	return full_addrs;
 }
