@@ -167,6 +167,8 @@ enum hard_fork_feature
 	FORK_BULLETPROOFS_REQ,
 	FORK_RINGSIZE_INC,
 	FORK_RINGSIZE_INC_REQ
+	FORK_BULLETPROOFS,
+	FORK_BULLETPROOFS_REQ
 };
 
 struct hardfork_conf
@@ -190,7 +192,7 @@ static constexpr hardfork_conf FORK_CONFIG[] = {
 	{FORK_RINGSIZE_INC, 7, 1},
 	{FORK_RINGSIZE_INC_REQ, 8, 1}
 	{FORK_BULLETPROOFS, 9, 1},
-	{FORK_BULLETPROOFS_REQ, 10, 1},
+	{FORK_BULLETPROOFS_REQ, 10, 1}
 };
 struct common_config
 {
