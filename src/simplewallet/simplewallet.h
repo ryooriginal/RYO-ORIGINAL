@@ -266,6 +266,7 @@ class simple_wallet : public tools::i_wallet2_callback
      * \param ptx_vector Pending tx(es) created by transfer/sweep_all
      */
 	void commit_or_save(std::vector<tools::wallet2::pending_tx> &ptx_vector, bool do_not_relay);
+	inline size_t get_min_ring_size() { return (m_wallet->use_fork_rules(FORK_RINGSIZE_INC) ? common_config::MIN_MIXIN_V2 : common_config::MIN_MIXIN_V1) + 1; }
 
 	//----------------- i_wallet2_callback ---------------------
 	virtual void on_new_block(uint64_t height, const cryptonote::block &block);
