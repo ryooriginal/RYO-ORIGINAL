@@ -126,6 +126,9 @@ TEST_pos(18446744073700000000, 18446744_0737000000000000000);
 /* Max supply */
 TEST_pos(18446744073709551615, 18446744_073709551615);
 
+/* Max uint64 */
+TEST_pos(18446744073709551615, 18446744073_709551615);
+
 // Invalid numbers
 TEST_neg_n(~, empty_string);
 TEST_neg_n(-0, minus_0);
@@ -134,9 +137,9 @@ TEST_neg_n(-1, minus_1);
 TEST_neg_n(+1, plus_1);
 TEST_neg_n(_, only_point);
 
-// Don't go below 10^-12
-TEST_neg(0_0000000000001);
-TEST_neg(0_0000000000009);
+// Don't go below 10^-9
+TEST_neg(0_0000000001);
+TEST_neg(0_0000000009);
 TEST_neg(184467440737_000000001);
 
 // Overflow
