@@ -124,9 +124,6 @@
 
 #define THREAD_STACK_SIZE 5 * 1024 * 1024
 
-#define DEFAULT_MIXIN 5 // default & minimum mixin allowed
-#define MAX_MIXIN 240
-
 #define PER_KB_FEE_QUANTIZATION_DECIMALS 8
 
 #define HASH_OF_HASHES_STEP 256
@@ -167,7 +164,9 @@ enum hard_fork_feature
 	FORK_NO_TIMED_LOCK,
 	FORK_NEED_V3_TXES,
 	FORK_BULLETPROOFS,
-	FORK_BULLETPROOFS_REQ
+	FORK_BULLETPROOFS_REQ,
+	FORK_RINGSIZE_INC,
+	FORK_RINGSIZE_INC_REQ
 };
 
 struct hardfork_conf
@@ -188,9 +187,14 @@ static constexpr hardfork_conf FORK_CONFIG[] = {
 	{FORK_NEED_V3_TXES, 4, 4, 1},
 	{FORK_BULLETPROOFS, hardfork_conf::FORK_ID_DISABLED, 5, 1},
 	{FORK_BULLETPROOFS_REQ, hardfork_conf::FORK_ID_DISABLED, 6, 1}
+	{FORK_RINGSIZE_INC, hardfork_conf::FORK_ID_DISABLED, 7, 1},
+	{FORK_RINGSIZE_INC_REQ, hardfork_conf::FORK_ID_DISABLED, 8, 1},
 };
 struct common_config
 {
+	static constexpr size_t MIN_MIXIN_V1 = 12; // default & minimum mixin allowed
+	static constexpr size_t MIN_MIXIN_V2 = 5;
+	static constexpr size_t MAX_MIXIN = 240;
 	static constexpr uint64_t POISSON_CHECK_TRIGGER = 10;  // Reorg size that triggers poisson timestamp check
 	static constexpr uint64_t POISSON_CHECK_DEPTH = 60;   // Main-chain depth of the poisson check. The attacker will have to tamper 50% of those blocks
 	static constexpr double POISSON_LOG_P_REJECT = -75.0; // Reject reorg if the probablity that the timestamps are genuine is below e^x, -75 = 10^-33
