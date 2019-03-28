@@ -1227,6 +1227,7 @@ class wallet2
 	std::string m_ring_database;
 	bool m_ring_history_saved;
 	std::unique_ptr<ringdb> m_ringdb;
+	uint64_t m_last_block_reward;
 };
 }
 BOOST_CLASS_VERSION(tools::wallet2, 24)
