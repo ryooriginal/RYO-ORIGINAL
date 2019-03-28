@@ -77,3 +77,6 @@ target_link_libraries(mnemonics
     ${Boost_SYSTEM_LIBRARY}
   PRIVATE
     ${EXTRA_LIBRARIES})
+    common
+    ${Boost_LOCALE_LIBRARY}
+    ${ICU_LIBRARIES}
