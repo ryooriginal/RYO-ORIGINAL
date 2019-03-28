@@ -731,6 +731,7 @@ class wallet2
 	void rescan_blockchain(bool hard, bool refresh = true);
 	bool is_transfer_unlocked(const transfer_details &td) const;
 	bool is_transfer_unlocked(uint64_t unlock_time, uint64_t block_height) const;
+	uint64_t get_last_block_reward() const { return m_last_block_reward; }
 	template <class t_archive>
 	inline void serialize(t_archive &a, const unsigned int ver)
 	{
