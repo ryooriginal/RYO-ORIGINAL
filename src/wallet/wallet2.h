@@ -1131,7 +1131,9 @@ class wallet2
 	bool get_ring(const crypto::chacha_key &key, const crypto::key_image &key_image, std::vector<uint64_t> &outs);
 
 	bool get_output_distribution(uint64_t &start_height, std::vector<uint64_t> &distribution);
-
+	
+	void setup_new_blockchain();
+	
 	uint64_t get_segregation_fork_height() const;
 
 	cryptonote::account_base m_account;
