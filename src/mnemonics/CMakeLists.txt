@@ -76,7 +76,7 @@ target_link_libraries(mnemonics
     easylogging
     ${Boost_SYSTEM_LIBRARY}
   PRIVATE
-    ${EXTRA_LIBRARIES})
-    common
+   common
     ${Boost_LOCALE_LIBRARY}
     ${ICU_LIBRARIES}
+    ${EXTRA_LIBRARIES})
