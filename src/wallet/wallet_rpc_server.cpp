@@ -1457,7 +1457,7 @@ bool wallet_rpc_server::on_rescan_blockchain(const wallet_rpc::COMMAND_RPC_RESCA
 
 	try
 	{
-		m_wallet->rescan_blockchain();
+		m_wallet->rescan_blockchain(req.hard);
 	}
 	catch(const std::exception &e)
 	{
